@@ -1,6 +1,20 @@
 from django.db import models
 
 
+
+class Ward(models.Model):
+    """
+    A district of the city whose residents elect and are represented by an alderman
+    """
+
+    ward_number = models.CharField(default="0", max_length=100)
+    """
+    The official number used to designate this ward
+    """
+
+
+
+
 VOTE_CHOICES = [
     'Aye',
     'No',
@@ -10,16 +24,12 @@ VOTE_CHOICES = [
 
 class Vote(models.Model):
     """
-    The record of a vote that was cast by an Alderman regarding a particular Bill
+    The record of a vote that was cast by an alderman regarding a particular bill
     """
 
-
-    # owner = models.ForeignKey('auth.User', related_name='snippets')
-
-
-    ward_number = models.CharField(default="0", max_length=100)
+    ward = models.ForeignKey(Ward, default=0)
     """
-    The city ward number of the ward whose alderman cast this vote
+    The ward whose alderman cast this vote
     """
 
     vote_decision = models.CharField(default="Did not vote", max_length=100)
@@ -27,15 +37,10 @@ class Vote(models.Model):
     The stance that the voter took regarding the bill. Choices are:
         'Aye':          in favor of the bill
         'No':           against the bill
-        'Present':      undecided or abstaining from voting
-        'Did not vote': was not attend the meeting
+        'Present':      undecided or abstained from voting
+        'Did not vote': was not in attendance at the meeting
     """
 
-class Ward(models.Model):
-    """
-    A geographical district of the city whose residents elect an alderman
-    """
-    ward_number = models.CharField(default="0", max_length=100)
-    """
-    The official number by which this ward is designated
-    """
+    def __str__(self):
+        return "Ward: %s | Wote: %s" % (self.ward_number, self.vote_decision)
+
