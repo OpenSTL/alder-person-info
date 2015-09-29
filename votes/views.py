@@ -1,34 +1,37 @@
 from django.shortcuts import render
-from votes.models import Vote
-from votes.serializers import VoteSerializer
+from votes.models import Vote, Ward
+from votes.serializers import VoteSerializer, WardSerializer
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, generics
 
 
 
-class VoteList(APIView):
+class VoteList(generics.ListCreateAPIView):
     """
     List all Votes, or create a new Vote
     """
-    def get(self, request, format=None):
-        votes = Vote.objects.all()
-        serializer = VoteSerializer(votes, many=True)
-        return Response(serializer.data)
-
-    def post(self, request, format=None):
-        serializer = VoteSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    queryset = Vote.objects.all()
+    serializer_class = VoteSerializer
 
 
-class VoteDetail(APIView):
+class VoteDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     Retrieve, update or delete a vote
     """
+    queryset = Vote.objects.all()
+    serializer_class = VoteSerializer
+
+
+class WardList(generics.ListAPIView):
+    """
+    List all Wards
+    """
+    queryset = Ward.objects.all()
+    serializer_class = WardSerializer
+
+
 
 
 

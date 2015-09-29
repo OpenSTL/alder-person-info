@@ -7,10 +7,15 @@ class Ward(models.Model):
     A district of the city whose residents elect and are represented by an alderman
     """
 
-    ward_number = models.CharField(default="0", max_length=100)
+    ward_number = models.CharField(default="0", max_length=100,)
     """
     The official number used to designate this ward
     """
+
+    readonly_fields = ('ward_number', )
+
+    def __str__(self):
+        return 'Ward %s' % self.ward_number
 
 
 
@@ -42,5 +47,5 @@ class Vote(models.Model):
     """
 
     def __str__(self):
-        return "Ward: %s | Wote: %s" % (self.ward_number, self.vote_decision)
+        return 'Ward: %s | Wote: %s' % (self.ward_number, self.vote_decision)
 
