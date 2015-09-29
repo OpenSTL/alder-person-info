@@ -47,5 +47,11 @@ class Vote(models.Model):
     """
 
     def __str__(self):
-        return 'Ward: %s | Wote: %s' % (self.ward_number, self.vote_decision)
+        return 'Ward: %s | Wote: %s' % (self.ward.ward_number, self.vote_decision)
 
+
+
+class VotingRound(models.Model):
+    """
+    The record of a hearing in which each alderman voted on a particular bill
+    """
