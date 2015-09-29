@@ -8,10 +8,15 @@ VOTE_CHOICES = [
     'Did not vote',
 ]
 
-"""
-The record of a vote that was cast by an Alderman regarding a particular Bill
-"""
 class Vote(models.Model):
+    """
+    The record of a vote that was cast by an Alderman regarding a particular Bill
+    """
+
+
+    # owner = models.ForeignKey('auth.User', related_name='snippets')
+
+
     ward_number = models.CharField(default="0", max_length=100)
     """
     The city ward number of the ward whose alderman cast this vote
@@ -24,4 +29,13 @@ class Vote(models.Model):
         'No':           against the bill
         'Present':      undecided or abstaining from voting
         'Did not vote': was not attend the meeting
+    """
+
+class Ward(models.Model):
+    """
+    A geographical district of the city whose residents elect an alderman
+    """
+    ward_number = models.CharField(default="0", max_length=100)
+    """
+    The official number by which this ward is designated
     """
