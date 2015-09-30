@@ -18,7 +18,40 @@ class Ward(models.Model):
         return 'Ward %s' % self.ward_number
 
 
+class Bill(models.Model):
+    """
+    A piece of legislation that has been and/or will be voted on by the city aldermen
+    """
 
+    bill_number = models.CharField(max_length=100)
+    """
+    The official number used in city legislation to designate this bill
+    """
+
+    title = models.CharField(blank=True, max_length=100)
+    """
+    An informal name for this bill
+    """
+
+
+
+class VotingRound(models.Model):
+    """
+    The record of a hearing on a particular bill in which each alderman voted
+    """
+
+    date = models.DateField
+    """
+    The date on which the voting round took place
+    """
+
+    bill = models.ForeignKey(Bill)
+    """
+    The bill that this voting round is deciding on
+    """
+
+
+# TODO turn this into an enum
 
 VOTE_CHOICES = [
     'Aye',
@@ -29,7 +62,8 @@ VOTE_CHOICES = [
 
 class Vote(models.Model):
     """
-    The record of a vote that was cast by an alderman regarding a particular bill
+    The record of a vote that was cast by an alderman during a particular
+    voting round of a particular bill
     """
 
     ward = models.ForeignKey(Ward, default=0)
@@ -46,12 +80,11 @@ class Vote(models.Model):
         'Did not vote': was not in attendance at the meeting
     """
 
+    voting_round = models.ForeignKey(VotingRound, default=0)
+    """
+    The voting round in which this vote took place
+    """
+
     def __str__(self):
         return 'Ward: %s | Wote: %s' % (self.ward.ward_number, self.vote_decision)
 
-
-
-class VotingRound(models.Model):
-    """
-    The record of a hearing in which each alderman voted on a particular bill
-    """

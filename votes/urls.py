@@ -7,4 +7,16 @@ urlpatterns = [
     url(r'^votes/$', views.VoteList.as_view()),
     url(r'^votes/(?P<pk>[0-9]+)/$', views.VoteDetail.as_view()),
     url(r'^votes/wards/$', views.WardList.as_view()),
+
+    """
+    /votes
+        /votes/?alderman=baringer
+        /votes/?ward=14
+        /votes/?bill=
+    /bills
+    /voting_rounds
+    /wards
+    /aldermen
+
+    """
 ]
