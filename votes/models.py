@@ -55,16 +55,11 @@ class VotingRound(models.Model):
 
 # TODO turn this into an enum
 
-VOTE_CHOICES = [
-    'Aye',
-    'No',
-    'Present',
-    'Did not vote',
-]
+VOTE_CHOICES = [ 'Aye', 'No', 'Present', 'Did not vote', ]
 
 class Vote(models.Model):
     """ The record of a vote that was cast by an alderman during a
-    particular voting round of a particular bill """
+     voting round in a bill's lifecycle """
 
     ward = models.ForeignKey(Ward, default=0)
     """ The ward whose alderman cast this vote """
