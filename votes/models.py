@@ -30,25 +30,41 @@ class Bill(models.Model):
 
     title = models.CharField(blank=True, max_length=100)
     """
-    An informal name for this bill
+    An optional informal name for this bill
     """
 
 
 
 class VotingRound(models.Model):
     """
-    The record of a hearing on a particular bill in which each alderman voted
+    The record of a hearing in which aldermen voted to advance or impede
+    the progress of a particular bill
     """
 
     date = models.DateField
     """
-    The date on which the voting round took place
+    The date on which this voting round took place
     """
 
     bill = models.ForeignKey(Bill)
     """
-    The bill that this voting round is deciding on
+    The bill on which voters were deliberating in this voting round
     """
+
+    def add_vote(self, vote):
+        """  Add a new Vote instance to, or replace an old Vote instance in
+        this VotingRound's vote_set. The vote_set represents the votes that were
+        cast during this voting round.
+
+        A VotingRound can have at most 1 Vote from each Ward. Therefore,
+        vote will replace any Vote object already in self.vote_set whose ward
+        is the same as vote.ward. """
+
+        # delete any Votes in the vote_set whose ward is the same
+        [ duplicate.delete() for duplicate
+          in self.vote_set.filter(ward_id=vote.ward_id)]
+
+        self.vote_set.add(vote)
 
 
 # TODO turn this into an enum
@@ -86,5 +102,5 @@ class Vote(models.Model):
     """
 
     def __str__(self):
-        return 'Ward: %s | Wote: %s' % (self.ward.ward_number, self.vote_decision)
+        return 'Ward: %s | Vote: %s' % (self.ward.ward_number, self.vote_decision)
 
