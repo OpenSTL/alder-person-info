@@ -3,7 +3,7 @@ from django.db import models
 
 
 class Ward(models.Model):
-    """ A district of the city whose residents elect and are represented by an alderman """
+    """ A district of the city whose residents elect and are represented by an Alderman """
 
     ward_number = models.CharField(default="0", max_length=100,)
     """ The official number used to designate this ward """
@@ -54,7 +54,6 @@ class VotingRound(models.Model):
 
 
 # TODO turn this into an enum
-
 VOTE_CHOICES = [ 'Aye', 'No', 'Present', 'Did not vote', ]
 
 class Vote(models.Model):
